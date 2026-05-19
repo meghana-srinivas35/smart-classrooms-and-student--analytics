@@ -1,0 +1,28 @@
+import sqlite3
+import os
+
+# Database path
+db_path = 'instance/smart_classrooms.db'
+
+if os.path.exists(db_path):
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    
+    # Get all tables
+    cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
+    tables = cursor.fetchall()
+    
+    print("=== DATABASE TABLES ===")
+    for table in tables:
+        print(f"- {table[0]}")
+    
+    print("\n=== USERS TABLE ===")
+    cursor.execute("SELECT id, name, email, role, section FROM users;")
+    users = cursor.fetchall()
+    
+    for user in users:
+        print(f"ID: {user[0]}, Name: {user[1]}, Email: {user[2]}, Role: {user[3]}, Section: {user[4]}")
+    
+    conn.close()
+else:
+    print("Database file not found!")
